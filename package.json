@@ -1,0 +1,157 @@
+{
+  "name": "live2d-pet",
+  "displayName": "Live2D Pet - AI Desktop Mascot",
+  "description": "AI Live2D 桌宠插件 - 200+ 模型、AI对话、Git互动、代码统计、自动语音",
+  "version": "1.0.0",
+  "publisher": "live2d-pet",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "res/logo.png",
+  "keywords": [
+    "live2d",
+    "看板娘",
+    "桌宠",
+    "kanbanniang",
+    "pet",
+    "mascot",
+    "anime",
+    "vtuber"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "live2d.start",
+        "title": "Live2D Pet: 启动桌宠"
+      },
+      {
+        "command": "live2d.hide",
+        "title": "Live2D Pet: 隐藏桌宠"
+      },
+      {
+        "command": "live2d.nextModel",
+        "title": "Live2D Pet: 切换下一个模型"
+      },
+      {
+        "command": "live2d.chat",
+        "title": "Live2D Pet: AI 对话"
+      }
+    ],
+    "configuration": [
+      {
+        "title": "Live2D 桌宠配置",
+        "properties": {
+          "live2d-pet.enabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否启用 Live2D 桌宠"
+          },
+          "live2d-pet.model": {
+            "type": "string",
+            "default": "shizuku-48",
+            "description": "选择 Live2D 模型（留空则随机）"
+          },
+          "live2d-pet.modelUrl": {
+            "type": "string",
+            "default": "",
+            "description": "自定义模型 URL（优先于 model 设置）"
+          },
+          "live2d-pet.modelWidth": {
+            "type": "integer",
+            "default": 300,
+            "minimum": 100,
+            "maximum": 800,
+            "description": "桌宠宽度 (px)"
+          },
+          "live2d-pet.modelHeight": {
+            "type": "integer",
+            "default": 380,
+            "minimum": 100,
+            "maximum": 900,
+            "description": "桌宠高度 (px)"
+          },
+          "live2d-pet.position": {
+            "type": "string",
+            "enum": [
+              "right",
+              "left"
+            ],
+            "default": "right",
+            "description": "桌宠位置（左/右）"
+          },
+          "live2d-pet.moveX": {
+            "type": "integer",
+            "default": 0,
+            "minimum": -500,
+            "maximum": 500,
+            "description": "水平偏移量 (px)"
+          },
+          "live2d-pet.moveY": {
+            "type": "integer",
+            "default": 0,
+            "minimum": -500,
+            "maximum": 500,
+            "description": "垂直偏移量 (px)"
+          },
+          "live2d-pet.opacity": {
+            "type": "number",
+            "default": 1,
+            "minimum": 0.1,
+            "maximum": 1,
+            "description": "桌宠透明度"
+          },
+          "live2d-pet.talk": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否显示对话气泡"
+          },
+          "live2d-pet.tts": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否启用自动语音（TTS）"
+          },
+          "live2d-pet.aiEnabled": {
+            "type": "boolean",
+            "default": true,
+            "description": "是否启用 AI 对话功能"
+          },
+          "live2d-pet.openaiApiKey": {
+            "type": "string",
+            "default": "",
+            "description": "OpenAI API Key（用于 AI 对话，留空则使用 VS Code 内置 AI）"
+          },
+          "live2d-pet.pointerOverHidden": {
+            "type": "boolean",
+            "default": false,
+            "description": "鼠标悬停时隐藏桌宠"
+          },
+          "live2d-pet.randomModel": {
+            "type": "boolean",
+            "default": false,
+            "description": "启动时随机选择模型"
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build": "tsc",
+    "package": "npx vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.100.0",
+    "@vscode/vsce": "^3.7.1",
+    "typescript": "^5.4.0"
+  }
+}

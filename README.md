@@ -1,2 +1,3 @@
-# my-live2d-vscode
-fork: vscode-live2d 的vscode 看板娘插件
+# VSCode Live2D Pet
+
+This is a VS Code extension that adds a Live2D pet to your editor. The pet can interact with you, perform actions, and provide a fun coding experience.
