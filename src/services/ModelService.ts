@@ -10,6 +10,14 @@ export class ModelService {
     'shizuku-48': 'https://raw.githubusercontent.com/iCharlesZ/vscode-live2d-models/master/model-library/shizuku-48/index.json'
   }
 
+  static getModelNames(): string[] {
+    return Object.keys(this.models) || [];
+  }
+
+  static getAllModels(): Record<string, string> {
+    return this.models;
+  }
+
   static getUrl(name: string): string {
     return this.models[name] || this.getRandom();
   }

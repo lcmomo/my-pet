@@ -23,23 +23,24 @@
     startX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
     startY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
     wrapper.style.transition = 'none';
+    
     e.preventDefault();
   }
 
   function onMove(e) {
-    var cx = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-    var cy = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-    var newX = origX + (cx - startX);
-    var newY = origY + (cy - startY);
-    var maxX = window.innerWidth  - wrapper.offsetWidth;
-    var maxY = window.innerHeight - wrapper.offsetHeight;
-    newX = Math.max(0, Math.min(maxX, newX));
-    newY = Math.max(0, Math.min(maxY, newY));
-    wrapper.style.position = 'fixed';
-    wrapper.style.left   = newX + 'px';
-    wrapper.style.top    = newY + 'px';
-    wrapper.style.right  = 'auto';
-    wrapper.style.bottom = 'auto';
+    // var cx = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+    // var cy = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+    // var newX = origX + (cx - startX);
+    // var newY = origY + (cy - startY);
+    // var maxX = window.innerWidth  - wrapper.offsetWidth;
+    // var maxY = window.innerHeight - wrapper.offsetHeight;
+    // newX = Math.max(0, Math.min(maxX, newX));
+    // newY = Math.max(0, Math.min(maxY, newY));
+    // wrapper.style.position = 'fixed';
+    // wrapper.style.left   = newX + 'px';
+    // wrapper.style.top    = newY + 'px';
+    // wrapper.style.right  = 'auto';
+    // wrapper.style.bottom = 'auto';
   }
 
   function onUp(e) {

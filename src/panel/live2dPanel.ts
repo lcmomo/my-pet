@@ -46,7 +46,8 @@ export class Live2DPanel {
       this.postMessage({
         type: "init",
         config: this.readConfig(cfg),
-        models: ModelService.models,
+        models: ModelService.getModelNames(),
+        modelUrlMap: ModelService.getAllModels(),
         modelBase: ModelService.base,
       });
     }, 1500);

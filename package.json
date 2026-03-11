@@ -1,9 +1,9 @@
 {
   "name": "live2d-pet",
   "displayName": "Live2D Pet - AI Desktop Mascot",
-  "description": "AI Live2D 桌宠插件 - 200+ 模型、AI对话、Git互动、代码统计、自动语音",
+  "description": "AI Live2D 桌宠插件 - 50+ 模型、AI对话、Git互动、代码统计、自动语音",
   "version": "1.0.0",
-  "publisher": "live2d-pet",
+  "publisher": "lcmomo",
   "engines": {
     "vscode": "^1.100.0"
   },

@@ -9,7 +9,7 @@
   var app, model;
   var currentModelName = 'shizuku-48';
   var ttsEnabled = true;
-  var config = {
+  var defaultConfig = {
     model: 'shizuku-48',
     modelUrl: '',
     modelWidth: 300,
@@ -27,7 +27,7 @@
   var MODELS = [
     'shizuku-48','Haru02','Hiyori','Mark','Natori','Rice','Wanko','Chitose','Miku'
   ];
-  for (var i = 1; i <= 200; i++) MODELS.push('Model' + i);
+  var MODEL_URL_MAP = {};
 
   /* ---- Loading overlay ---- */
   var wrapper = document.getElementById('pet-wrapper');
@@ -52,16 +52,19 @@
     if (cfg.randomModel) {
       var name = MODELS[Math.floor(Math.random() * MODELS.length)];
       currentModelName = name;
-      return MODEL_BASE + name + '/' + name + '.model3.json';
+      return MODEL_URL_MAP[name] || (MODEL_BASE + name + '/' + name + '.model3.json');
     }
-    var name = cfg.model || 'Haru';
+    var name = cfg.model || 'shizuku-48';
     currentModelName = name;
-    return MODEL_BASE + name + '/' + name + '.model3.json';
+    return MODEL_URL_MAP[name] || (MODEL_BASE + name + '/' + name + '.model3.json');
   }
 
   /* ---- Apply config to wrapper ---- */
-  function applyConfig(cfg) {
-    Object.assign(config, cfg);
+  function applyConfig(config) {
+    const { config: cfg, models = [], modelUrlMap = {} } = config;
+    Object.assign(defaultConfig, cfg);
+    MODELS = models;
+    MODEL_URL_MAP = modelUrlMap;
     wrapper.style.opacity = cfg.opacity || 1;
     if (cfg.position === 'left') {
       wrapper.classList.add('position-left');
@@ -99,8 +102,8 @@
       }
 
       // Determine scale: fit the model to the canvas
-      const targetW = w || config.modelWidth || 300;
-      const targetH = h || config.modelHeight || 380;
+      const targetW = w || defaultConfig.modelWidth || 300;
+      const targetH = h || defaultConfig.modelHeight || 380;
       const scaleX = targetW / live2DModel.width;
       const scaleY = targetH / live2DModel.height;
       const scale = Math.min(scaleX, scaleY) * 0.95;
@@ -118,6 +121,7 @@
 
       app.stage.addChild(live2DModel);
       model = live2DModel;
+      window.petApp.model = model;
 
       hideLoading();
       console.log('[PetJS] Model loaded successfully');
@@ -163,7 +167,7 @@
         item.addEventListener('click', function () {
           currentModelName = name;
           var url = MODEL_BASE + name + '/' + name + '.model3.json';
-          loadModel(url, config.modelWidth, config.modelHeight);
+          loadModel(url, defaultConfig.modelWidth, defaultConfig.modelHeight);
           picker.classList.add('hidden');
           if (window.PetSpeech) window.PetSpeech.say('正在加载模型 ' + name + '...');
         });
@@ -224,14 +228,14 @@
     switch (msg.type) {
       case 'init':
         if (msg.config) {
-          applyConfig(msg.config);
+          applyConfig(msg);
           loadModel(getModelUrl(msg.config), msg.config.modelWidth, msg.config.modelHeight);
         }
         break;
 
       case 'configUpdate':
         if (msg.config) {
-          applyConfig(msg.config);
+          applyConfig(msg);
           loadModel(getModelUrl(msg.config), msg.config.modelWidth, msg.config.modelHeight);
         }
         break;
@@ -241,7 +245,7 @@
         var nextName = MODELS[(idx + 1) % MODELS.length];
         currentModelName = nextName;
         var url = MODEL_BASE + nextName + '/' + nextName + '.model3.json';
-        loadModel(url, config.modelWidth, config.modelHeight);
+        loadModel(url, defaultConfig.modelWidth, defaultConfig.modelHeight);
         if (window.PetSpeech) window.PetSpeech.say('切换到 ' + nextName + ' 啦！');
         break;
       }
@@ -249,25 +253,25 @@
       case 'buildFail':
         if (window.PetActions) window.PetActions.playForContext('fail');
         if (window.PetExpressions) window.PetExpressions.play('sad');
-        if (window.PetSpeech && config.talk) window.PetSpeech.say(msg.text);
+        if (window.PetSpeech && defaultConfig.talk) window.PetSpeech.say(msg.text);
         break;
 
       case 'buildSuccess':
         if (window.PetActions) window.PetActions.playForContext('happy');
         if (window.PetExpressions) window.PetExpressions.play('smile');
-        if (window.PetSpeech && config.talk) window.PetSpeech.say(msg.text);
+        if (window.PetSpeech && defaultConfig.talk) window.PetSpeech.say(msg.text);
         break;
 
       case 'gitSave':
       case 'gitCommit':
         if (window.PetActions) window.PetActions.playForContext('commit');
-        if (window.PetSpeech && config.talk) window.PetSpeech.say(msg.text);
+        if (window.PetSpeech && defaultConfig.talk) window.PetSpeech.say(msg.text);
         break;
 
       case 'codeStats':
       case 'sessionTime':
         if (window.PetActions) window.PetActions.playForContext('happy');
-        if (window.PetSpeech && config.talk) window.PetSpeech.say(msg.text);
+        if (window.PetSpeech && defaultConfig.talk) window.PetSpeech.say(msg.text);
         break;
 
       case 'chat':
@@ -289,8 +293,8 @@
       view: document.getElementById('pet-canvas'),
       transparent: true,
       backgroundAlpha: 0,
-      width:  config.modelWidth  || 300,
-      height: config.modelHeight || 380,
+      width:  defaultConfig.modelWidth  || 300,
+      height: defaultConfig.modelHeight || 380,
       antialias: true,
     });
 
@@ -306,7 +310,7 @@
 
     // Load default model immediately (will be overwritten by 'init' message)
     showLoading();
-    setTimeout(() => {    loadModel(MODEL_BASE + 'shizuku-48/index.json', 300, 380);});
+    // loadModel(MODEL_BASE + 'shizuku-48/index.json', 300, 380);
     
   }
 
