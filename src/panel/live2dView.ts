@@ -145,18 +145,17 @@ export class Live2DViewProvider implements vscode.WebviewViewProvider {
       <button id="btn-chat" title="和我说话">💬</button>
       <button id="btn-toggle-tts" title="语音开关">🔊</button>
     </div>
-  </div>
-
-  <!-- AI 对话面板 -->
-  <div id="chat-panel" class="hidden">
-    <div id="chat-header">
-      <span>💬 AI 对话</span>
-      <button id="chat-close">✖</button>
-    </div>
-    <div id="chat-messages"></div>
-    <div id="chat-input-row">
-      <input id="chat-input" type="text" placeholder="和我说点什么吧～" />
-      <button id="chat-send">发送</button>
+    <!-- AI 对话面板：嵌套在 pet-wrapper 内，随宠物位置自适应 -->
+    <div id="chat-panel" class="hidden">
+      <div id="chat-header">
+        <span>💬 AI 对话</span>
+        <button id="chat-close">✖</button>
+      </div>
+      <div id="chat-messages"></div>
+      <div id="chat-input-row">
+        <input id="chat-input" type="text" placeholder="和我说点什么吧～" />
+        <button id="chat-send">发送</button>
+      </div>
     </div>
   </div>
 

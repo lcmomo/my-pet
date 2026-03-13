@@ -84,8 +84,17 @@
 
   /* ---- Load (or reload) model using PIXI.live2d ---- */
   async function loadModel(url, w, h) {
+    // Resolve target canvas dimensions up-front so the renderer is resized before loading
+    const targetW = w || defaultConfig.modelWidth || 300;
+    const targetH = h || defaultConfig.modelHeight || 380;
+
     showLoading();
     try {
+      // Resize the PIXI renderer and canvas to match the new dimensions
+      if (app) {
+        app.renderer.resize(targetW, targetH);
+      }
+
       console.log('[PetJS] Loading model from', url);
       if (model) {
         app.stage.removeChild(model);
@@ -102,8 +111,6 @@
       }
 
       // Determine scale: fit the model to the canvas
-      const targetW = w || defaultConfig.modelWidth || 300;
-      const targetH = h || defaultConfig.modelHeight || 380;
       const scaleX = targetW / live2DModel.width;
       const scaleY = targetH / live2DModel.height;
       const scale = Math.min(scaleX, scaleY) * 0.95;
