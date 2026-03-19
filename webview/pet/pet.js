@@ -204,6 +204,7 @@
         }
         if (window.PetActions) window.PetActions.playForContext('wave');
         if (window.PetActions) window.PetActions.startIdleLoop();
+        startReminderLoop();
       }, 600);
     } catch (err) {
       hideLoading();
@@ -217,6 +218,53 @@
     el.id = 'loading-overlay';
     el.innerHTML = '<div style="text-align:center;color:#f87171;font-size:13px;">❌ ' + msg + '</div>';
     wrapper.appendChild(el);
+  }
+
+  /* ---- Periodic reminders (drink water / move body) ---- */
+  var reminderTimers = [];
+
+  var WATER_PHRASES = [
+    '主人～该喝水啦！补充水分很重要哦 💧',
+    '记得喝水！主人的健康第一！(｡•ᴗ•｡)',
+    '你上次喝水是什么时候？快去喝一杯吧～',
+    '主人！水是生命之源，快来一杯！💦',
+    '喝水时间到！不喝水主人会变干巴巴的啦～',
+    '嘿！去倒杯水喝嘛，我等你回来 (≧▽≦)',
+  ];
+
+  var MOVE_PHRASES = [
+    '主人，久坐伤身！起来活动一下吧～🏃',
+    '该起来走走啦！对眼睛也好哦 (＾▽＾)',
+    '主人的身体很重要！做几个伸展运动吧！🤸',
+    '已经坐了好久了～站起来动一动吧！',
+    '休息一下！眼睛离屏幕远一点，活动活动手腕 ✨',
+    '主人，去放松一下眼睛吧，看看远方～👀',
+  ];
+
+  function startReminderLoop() {
+    reminderTimers.forEach(function(t) { clearInterval(t); });
+    reminderTimers = [];
+
+    // Drink water reminder: every 30 minutes
+    var waterTimer = setInterval(function () {
+      if (document.hidden) return;
+      if (window.PetSpeech && defaultConfig.talk) {
+        window.PetSpeech.say(WATER_PHRASES[Math.floor(Math.random() * WATER_PHRASES.length)]);
+      }
+      if (window.PetActions) window.PetActions.playForContext('wave');
+    }, 30 * 60 * 1000);
+
+    // Move body reminder: every 45 minutes
+    var moveTimer = setInterval(function () {
+      if (document.hidden) return;
+      if (window.PetSpeech && defaultConfig.talk) {
+        window.PetSpeech.say(MOVE_PHRASES[Math.floor(Math.random() * MOVE_PHRASES.length)]);
+      }
+      if (window.PetActions) window.PetActions.playForContext('dance');
+      if (window.PetExpressions) window.PetExpressions.playRandom();
+    }, 45 * 60 * 1000);
+
+    reminderTimers.push(waterTimer, moveTimer);
   }
 
   /* ---- Mouse tracking ---- */
