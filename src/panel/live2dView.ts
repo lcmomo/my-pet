@@ -14,6 +14,7 @@ let globalMessageHandler: MessageHandler | undefined;
 export class Live2DViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "live2dPetView";
 
+  public static modelBaseUrl = "http://localhost:3200";
   private _view?: vscode.WebviewView;
   private readonly _context: vscode.ExtensionContext;
 
@@ -118,10 +119,10 @@ export class Live2DViewProvider implements vscode.WebviewViewProvider {
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'none';
-             img-src ${csp} https: data: blob:;
+             img-src ${csp} ${Live2DViewProvider.modelBaseUrl} https: data: blob:;
              script-src ${csp} 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://cubism.live2d.com https://raw.githubusercontent.com;
              style-src ${csp} 'unsafe-inline';
-             connect-src https: wss: data: blob:;
+             connect-src ${Live2DViewProvider.modelBaseUrl} https: wss: data: blob:;
              font-src ${csp} https: data:;
              media-src https: blob:;">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

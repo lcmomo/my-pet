@@ -142,7 +142,7 @@ function updateStatusBar(item: vscode.StatusBarItem, visible: boolean) {
 function getConfig(cfg: vscode.WorkspaceConfiguration) {
   return {
     model: cfg.get<string>("model", "shizuku-48"),
-    modelUrl: cfg.get<string>("modelUrl", "https://raw.githubusercontent.com/iCharlesZ/vscode-live2d-models/master/model-library/shizuku-48/index.json"),
+    modelUrl: cfg.get<string>("modelUrl", ""),
     modelWidth: cfg.get<number>("modelWidth", 300),
     modelHeight: cfg.get<number>("modelHeight", 380),
     position: cfg.get<string>("position", "right"),
